@@ -1,0 +1,47 @@
+
+* { box-sizing: border-box; }
+body { margin:0; background:#ecece8; color:#111; font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+button,input,select { font:inherit; }
+.app { min-height:100vh; display:grid; grid-template-columns:480px 1fr; gap:24px; padding:22px; }
+.panel { background:#fff; border-radius:24px; padding:20px; box-shadow:0 18px 45px rgba(0,0,0,.08); align-self:start; }
+.top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+h1 { margin:0; font-size:31px; letter-spacing:-.05em; }
+p { color:#666; font-size:14px; }
+.cloudBadge { display:flex; align-items:center; gap:6px; max-width:220px; padding:8px 10px; border-radius:999px; background:#eaf8f0; color:#097b43; font-size:12px; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.errorBox { display:flex; gap:8px; background:#ffe8e8; color:#a40016; padding:12px; border-radius:14px; margin:14px 0; font-size:13px; font-weight:800; word-break:break-word; }
+.notice { background:#fff7d6; color:#6a5500; padding:12px; border-radius:14px; margin-bottom:14px; font-size:13px; font-weight:700; line-height:1.35; }
+.cloudProjectBox { display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:end; background:#f7f7f2; padding:10px; border-radius:16px; margin:12px 0; }
+.cloudProjectBox span,.field span { display:block; font-size:12px; font-weight:900; margin-bottom:6px; }
+.cloudProjectBox input,.field input,.field select,.scorerRow input,.scorerRow select,.scorerSaveBox input { width:100%; border:1px solid #d8d8d3; border-radius:14px; padding:11px 12px; background:#fbfbf9; outline:none; }
+.tabs { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; background:#f1f1ed; padding:5px; border-radius:17px; margin:14px 0 18px; }
+.tabs button { min-height:39px; background:transparent; border:0; border-radius:13px; font-weight:900; cursor:pointer; font-size:12px; }
+.tabs button.on { background:#fff; box-shadow:0 4px 12px rgba(0,0,0,.08); }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.uploadGrid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+.uploadBox { display:flex; align-items:center; justify-content:center; gap:8px; min-height:62px; border:1px dashed #aaa; border-radius:18px; background:#fbfbf9; cursor:pointer; font-weight:900; text-align:center; padding:10px; }
+.uploadBox.busy { opacity:.65; pointer-events:none; }
+.uploadBox input { display:none; }
+button { border:0; min-height:44px; border-radius:15px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:950; padding:0 12px; }
+.primary { background:#e30622; color:#fff; }
+.secondary { background:#111; color:#fff; }
+.ghost,.iconBtn { background:#f1f1ed; color:#111; }
+.buttonStack,.ratioGrid,.scorers { display:grid; gap:9px; }
+.choice { background:#f1f1ed; color:#111; }
+.choice.on { background:#168f5a; color:#fff; }
+.scorerHead { display:flex; justify-content:space-between; align-items:center; margin:16px 0 10px; }
+.scorerHead h2 { margin:0; font-size:18px; }
+.scorerSaveBox { display:grid; grid-template-columns:1fr auto; gap:8px; margin-bottom:12px; }
+.scorerRow { display:grid; grid-template-columns:76px 64px 1fr 42px; gap:8px; align-items:start; }
+.scorerNameWrap { display:grid; gap:6px; }
+.sliderField { display:block; margin:12px 0 16px; font-size:13px; font-weight:900; }
+.sliderField input { width:100%; margin-top:8px; accent-color:#168f5a; }
+.libraryStats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; }
+.libraryStats div { background:#f4f4ef; border-radius:18px; padding:14px; display:grid; gap:4px; justify-items:center; }
+.libraryStats b { font-size:24px; }
+.previewWrap { display:flex; justify-content:center; align-items:flex-start; min-width:0; }
+.preview { width:min(100%,680px); aspect-ratio:4/5; background:#fff; border-radius:26px; overflow:hidden; box-shadow:0 20px 55px rgba(0,0,0,.16); }
+.preview.story { width:min(100%,520px); aspect-ratio:9/16; }
+.preview.landscape { width:min(100%,920px); aspect-ratio:16/9; }
+.preview svg { width:100%; height:100%; display:block; }
+@media (max-width:1050px) { .app{grid-template-columns:1fr;padding:12px}.previewWrap{order:1}.panel{order:2} }
+@media (max-width:560px) { .grid,.uploadGrid,.cloudProjectBox,.scorerSaveBox{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(3,1fr)}.scorerRow{grid-template-columns:70px 58px 1fr 38px}.top{display:grid} }
