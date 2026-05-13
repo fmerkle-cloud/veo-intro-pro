@@ -652,14 +652,14 @@ function App() {
         {activeTab === "export" && (
           <section>
             <div className="ratioGrid">
-              <button className={ratio === "portrait" ? "choice on" : "choice"} onClick={() => setRatio("portrait")}><Smartphone size={18}/> 1080Ã—1350</button>
-              <button className={ratio === "story" ? "choice on" : "choice"} onClick={() => setRatio("story")}><Smartphone size={18}/> Story 1080Ã—1920</button>
-              <button className={ratio === "landscape" ? "choice on" : "choice"} onClick={() => setRatio("landscape")}><Monitor size={18}/> 1920Ã—1080</button>
+              <button className={ratio === "portrait" ? "choice on" : "choice"} onClick={() => setRatio("portrait")}><Smartphone size={18}/> 1080×1350</button>
+              <button className={ratio === "story" ? "choice on" : "choice"} onClick={() => setRatio("story")}><Smartphone size={18}/> Story 1080×1920</button>
+              <button className={ratio === "landscape" ? "choice on" : "choice"} onClick={() => setRatio("landscape")}><Monitor size={18}/> 1920×1080</button>
             </div>
             <div className="buttonStack">
               <button className="primary" onClick={exportPngCanvas}><Download size={18}/> PNG exportieren</button>
               <button className="secondary" onClick={() => persistCloud(state)}><Cloud size={18}/> In Cloud speichern</button>
-              <button className="ghost" onClick={() => setState(defaultState)}><RotateCcw size={18}/> Alles zurÃ¼cksetzen</button>
+              <button className="ghost" onClick={() => setState(defaultState)}><RotateCcw size={18}/> Alles zurücksetzen</button>
             </div>
           </section>
         )}
@@ -699,6 +699,7 @@ function App() {
 }
 
 createRoot(document.getElementById("root")).render(<App />);
+
 
 
 
