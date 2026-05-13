@@ -589,7 +589,7 @@ function App() {
             </div>
 
             <div className="scorerSaveBox">
-              <input value={newScorerName} onChange={(e) => setNewScorerName(e.target.value)} placeholder="TorschÃ¼tze speichern, z. B. F. Merkle" />
+              <input value={newScorerName} onChange={(e) => setNewScorerName(e.target.value)} placeholder="Torschütze speichern, z. B. F. Merkle" />
               <button className="secondary" onClick={() => saveScorerName(newScorerName)}><Save size={16}/> Speichern</button>
             </div>
 
@@ -602,7 +602,7 @@ function App() {
                   <div className="scorerNameWrap">
                     <input placeholder="Name" value={s.name} onChange={(e) => updateScorer(i, "name", e.target.value)} onBlur={() => saveScorerName(s.name)} />
                     <select value="" onChange={(e) => e.target.value && updateScorer(i, "name", e.target.value)}>
-                      <option value="">TorschÃ¼tze auswählen</option>
+                      <option value="">Torschütze auswählen</option>
                       {(state.scorerNames || []).map(name => <option key={name} value={name}>{name}</option>)}
                     </select>
                   </div>
@@ -634,8 +634,8 @@ function App() {
         {activeTab === "design" && (
           <section>
             <label className="sliderField"><span>Hintergrund-Deckkraft: {m.backgroundOpacity}%</span><input type="range" min="10" max="100" value={m.backgroundOpacity} onChange={(e) => updateMatch("backgroundOpacity", Number(e.target.value))} /></label>
-            <label className="sliderField"><span>Logo-GrÃ¶ÃŸe: {m.logoScale}%</span><input type="range" min="50" max="180" value={m.logoScale} onChange={(e) => updateMatch("logoScale", Number(e.target.value))} /></label>
-            <label className="sliderField"><span>SponsorgrÃ¶ÃŸe: {m.sponsorScale}%</span><input type="range" min="60" max="260" value={m.sponsorScale} onChange={(e) => updateMatch("sponsorScale", Number(e.target.value))} /></label>
+            <label className="sliderField"><span>Logo-Größe: {m.logoScale}%</span><input type="range" min="50" max="180" value={m.logoScale} onChange={(e) => updateMatch("logoScale", Number(e.target.value))} /></label>
+            <label className="sliderField"><span>SponsorGröße: {m.sponsorScale}%</span><input type="range" min="60" max="260" value={m.sponsorScale} onChange={(e) => updateMatch("sponsorScale", Number(e.target.value))} /></label>
           </section>
         )}
 
@@ -699,6 +699,7 @@ function App() {
 }
 
 createRoot(document.getElementById("root")).render(<App />);
+
 
 
 
