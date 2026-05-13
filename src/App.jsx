@@ -593,7 +593,7 @@ function App() {
               <button className="secondary" onClick={() => saveScorerName(newScorerName)}><Save size={16}/> Speichern</button>
             </div>
 
-            <div className="scorerHead"><h2>TorschÃ¼tzen</h2><button className="secondary" onClick={() => setScorers([...state.scorers, { team: "home", minute: "", name: "" }])}><Plus size={16}/> Zeile</button></div>
+            <div className="scorerHead"><h2>Torschützen</h2><button className="secondary" onClick={() => setScorers([...state.scorers, { team: "home", minute: "", name: "" }])}><Plus size={16}/> Zeile</button></div>
             <div className="scorers">
               {state.scorers.map((s, i) => (
                 <div className="scorerRow" key={i}>
@@ -602,7 +602,7 @@ function App() {
                   <div className="scorerNameWrap">
                     <input placeholder="Name" value={s.name} onChange={(e) => updateScorer(i, "name", e.target.value)} onBlur={() => saveScorerName(s.name)} />
                     <select value="" onChange={(e) => e.target.value && updateScorer(i, "name", e.target.value)}>
-                      <option value="">TorschÃ¼tze auswÃ¤hlen</option>
+                      <option value="">TorschÃ¼tze auswählen</option>
                       {(state.scorerNames || []).map(name => <option key={name} value={name}>{name}</option>)}
                     </select>
                   </div>
@@ -641,11 +641,11 @@ function App() {
 
         {activeTab === "library" && (
           <section>
-            <LibrarySelect label="Heimteam aus Bibliothek" items={state.teams} empty="Team auswÃ¤hlen" onPick={(t) => pickTeamFromLibrary("home", t)} />
-            <LibrarySelect label="Gegner aus Bibliothek" items={state.teams} empty="Team auswÃ¤hlen" onPick={(t) => pickTeamFromLibrary("away", t)} />
-            <LibrarySelect label="Sponsor aus Bibliothek" items={state.sponsors} empty="Sponsor auswÃ¤hlen" onPick={(s) => pickSponsorFromLibrary(s)} />
-            <LibrarySelect label="Hintergrund aus Bibliothek" items={state.backgrounds} empty="Hintergrund auswÃ¤hlen" onPick={(b) => pickBackgroundFromLibrary(b)} />
-            <div className="libraryStats"><div><span>Teams</span><b>{state.teams.length}</b></div><div><span>Sponsoren</span><b>{state.sponsors.length}</b></div><div><span>TorschÃ¼tzen</span><b>{state.scorerNames.length}</b></div></div>
+            <LibrarySelect label="Heimteam aus Bibliothek" items={state.teams} empty="Team auswählen" onPick={(t) => pickTeamFromLibrary("home", t)} />
+            <LibrarySelect label="Gegner aus Bibliothek" items={state.teams} empty="Team auswählen" onPick={(t) => pickTeamFromLibrary("away", t)} />
+            <LibrarySelect label="Sponsor aus Bibliothek" items={state.sponsors} empty="Sponsor auswählen" onPick={(s) => pickSponsorFromLibrary(s)} />
+            <LibrarySelect label="Hintergrund aus Bibliothek" items={state.backgrounds} empty="Hintergrund auswählen" onPick={(b) => pickBackgroundFromLibrary(b)} />
+            <div className="libraryStats"><div><span>Teams</span><b>{state.teams.length}</b></div><div><span>Sponsoren</span><b>{state.sponsors.length}</b></div><div><span>Torschützen</span><b>{state.scorerNames.length}</b></div></div>
           </section>
         )}
 
@@ -699,5 +699,6 @@ function App() {
 }
 
 createRoot(document.getElementById("root")).render(<App />);
+
 
 
