@@ -1,4 +1,4 @@
-
+﻿
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Cloud, CloudOff, Download, Image as ImageIcon, Monitor, Plus, RotateCcw, Save, Smartphone, Trash2, Upload } from "lucide-react";
@@ -22,7 +22,7 @@ const storage = getStorage(firebaseApp);
 
 const DEFAULT_HOME_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><circle cx="130" cy="130" r="122" fill="white" stroke="#15935e" stroke-width="12"/><text x="130" y="105" text-anchor="middle" font-size="34" font-family="Arial Black" fill="#15935e">HEIM</text><text x="130" y="165" text-anchor="middle" font-size="54" font-family="Arial Black" fill="#111">SGM</text></svg>`);
 const DEFAULT_AWAY_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M40 30 H220 V195 Q130 245 40 195 Z" fill="#35568e" stroke="white" stroke-width="8"/><text x="130" y="108" text-anchor="middle" font-size="62" font-family="Arial Black" fill="white">SV</text><text x="130" y="165" text-anchor="middle" font-size="30" font-family="Arial Black" fill="white">GAST</text></svg>`);
-const DEFAULT_SPONSOR = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180"><rect width="420" height="180" rx="20" fill="#ef2e2e"/><text x="210" y="78" text-anchor="middle" font-size="44" font-family="Arial Black" fill="white">RÖSTER</text><text x="210" y="126" text-anchor="middle" font-size="44" font-family="Arial Black" fill="white">NEST</text></svg>`);
+const DEFAULT_SPONSOR = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180"><rect width="420" height="180" rx="20" fill="#ef2e2e"/><text x="210" y="78" text-anchor="middle" font-size="44" font-family="Arial Black" fill="white">RÃ–STER</text><text x="210" y="126" text-anchor="middle" font-size="44" font-family="Arial Black" fill="white">NEST</text></svg>`);
 
 const defaultState = {
   match: {
@@ -57,7 +57,7 @@ const defaultState = {
     { name: "SGM Balzheim/Dietenheim", logo: DEFAULT_HOME_LOGO, logoUrl: "" },
     { name: "SV Pfaffenhofen", logo: DEFAULT_AWAY_LOGO, logoUrl: "" }
   ],
-  sponsors: [{ name: "Röster Nest", logo: DEFAULT_SPONSOR, logoUrl: "" }],
+  sponsors: [{ name: "RÃ¶ster Nest", logo: DEFAULT_SPONSOR, logoUrl: "" }],
   backgrounds: []
 };
 
@@ -163,7 +163,7 @@ function stripForCloud(state) {
 }
 
 function safeFileName(text) {
-  return (text || "intro").toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"");
+  return (text || "intro").toLowerCase().replace(/Ã¤/g,"ae").replace(/Ã¶/g,"oe").replace(/Ã¼/g,"ue").replace(/ÃŸ/g,"ss").replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"");
 }
 
 function downloadBlob(blob, fileName) {
@@ -459,6 +459,91 @@ function App() {
       setError(`Export-Fehler: ${err.message || err}`);
     }
   }
+  async function pickTeamFromLibrary(side, team) {
+    try {
+      setError("");
+
+      const nameKey = side === "home" ? "homeTeam" : "awayTeam";
+      const imgKey = side === "home" ? "homeLogo" : "awayLogo";
+      const urlKey = side === "home" ? "homeLogoUrl" : "awayLogoUrl";
+
+      const nextMatch = {
+        ...state.match,
+        [nameKey]: team.name || state.match[nameKey],
+        [urlKey]: team.logoUrl || state.match[urlKey]
+      };
+
+      if (team.logo) {
+        nextMatch[imgKey] = team.logo;
+      } else if (team.logoUrl) {
+        nextMatch[imgKey] = await urlToDataUrl(team.logoUrl);
+      }
+
+      setState((s) => ({
+        ...s,
+        match: {
+          ...s.match,
+          ...nextMatch
+        }
+      }));
+    } catch (err) {
+      setError(`Bibliothek-Fehler: ${err.message || err}`);
+    }
+  }
+
+  async function pickSponsorFromLibrary(sponsor) {
+    try {
+      setError("");
+
+      const nextMatch = {
+        ...state.match,
+        sponsorLogoUrl: sponsor.logoUrl || state.match.sponsorLogoUrl
+      };
+
+      if (sponsor.logo) {
+        nextMatch.sponsorLogo = sponsor.logo;
+      } else if (sponsor.logoUrl) {
+        nextMatch.sponsorLogo = await urlToDataUrl(sponsor.logoUrl);
+      }
+
+      setState((s) => ({
+        ...s,
+        match: {
+          ...s.match,
+          ...nextMatch
+        }
+      }));
+    } catch (err) {
+      setError(`Bibliothek-Fehler: ${err.message || err}`);
+    }
+  }
+
+  async function pickBackgroundFromLibrary(background) {
+    try {
+      setError("");
+
+      const nextMatch = {
+        ...state.match,
+        backgroundImageUrl: background.imageUrl || state.match.backgroundImageUrl
+      };
+
+      if (background.image) {
+        nextMatch.backgroundImage = background.image;
+      } else if (background.imageUrl) {
+        nextMatch.backgroundImage = await urlToDataUrl(background.imageUrl);
+      }
+
+      setState((s) => ({
+        ...s,
+        match: {
+          ...s.match,
+          ...nextMatch
+        }
+      }));
+    } catch (err) {
+      setError(`Bibliothek-Fehler: ${err.message || err}`);
+    }
+  }
 
   const viewBox = ratio === "story" ? "0 0 1080 1920" : ratio === "landscape" ? "0 0 1920 1080" : "0 0 1080 1350";
   const stageHeight = ratio === "story" ? 1920 : ratio === "landscape" ? 1080 : 1350;
@@ -478,7 +563,7 @@ function App() {
           <div className="cloudBadge"><Cloud size={16}/> {cloudStatus}</div>
         </header>
 
-        {error && <div className="errorBox"><span>⚠️</span><span>{error}</span></div>}
+        {error && <div className="errorBox"><span>âš ï¸</span><span>{error}</span></div>}
 
         <div className="cloudProjectBox">
           <label><span>Cloud-Projekt-Code</span><input value={projectCode} onChange={(e) => setProjectCode(e.target.value.trim().toLowerCase())} /></label>
@@ -504,11 +589,11 @@ function App() {
             </div>
 
             <div className="scorerSaveBox">
-              <input value={newScorerName} onChange={(e) => setNewScorerName(e.target.value)} placeholder="Torschütze speichern, z. B. F. Merkle" />
+              <input value={newScorerName} onChange={(e) => setNewScorerName(e.target.value)} placeholder="TorschÃ¼tze speichern, z. B. F. Merkle" />
               <button className="secondary" onClick={() => saveScorerName(newScorerName)}><Save size={16}/> Speichern</button>
             </div>
 
-            <div className="scorerHead"><h2>Torschützen</h2><button className="secondary" onClick={() => setScorers([...state.scorers, { team: "home", minute: "", name: "" }])}><Plus size={16}/> Zeile</button></div>
+            <div className="scorerHead"><h2>TorschÃ¼tzen</h2><button className="secondary" onClick={() => setScorers([...state.scorers, { team: "home", minute: "", name: "" }])}><Plus size={16}/> Zeile</button></div>
             <div className="scorers">
               {state.scorers.map((s, i) => (
                 <div className="scorerRow" key={i}>
@@ -517,7 +602,7 @@ function App() {
                   <div className="scorerNameWrap">
                     <input placeholder="Name" value={s.name} onChange={(e) => updateScorer(i, "name", e.target.value)} onBlur={() => saveScorerName(s.name)} />
                     <select value="" onChange={(e) => e.target.value && updateScorer(i, "name", e.target.value)}>
-                      <option value="">Torschütze auswählen</option>
+                      <option value="">TorschÃ¼tze auswÃ¤hlen</option>
                       {(state.scorerNames || []).map(name => <option key={name} value={name}>{name}</option>)}
                     </select>
                   </div>
@@ -530,7 +615,7 @@ function App() {
 
         {activeTab === "media" && (
           <section>
-            <div className="notice">Hybrid: Bilder werden in Firebase Storage gespeichert und lokal für stabilen Export eingebettet. Vereinslogos werden freigestellt; Sponsor bleibt original.</div>
+            <div className="notice">Hybrid: Bilder werden in Firebase Storage gespeichert und lokal fÃ¼r stabilen Export eingebettet. Vereinslogos werden freigestellt; Sponsor bleibt original.</div>
             <div className="uploadGrid">
               <UploadBox busy={uploading === "homeLogo"} label="Heimlogo hochladen" onUpload={(file) => handleImageUpload("homeLogo", file)} />
               <UploadBox busy={uploading === "awayLogo"} label="Gegnerlogo hochladen" onUpload={(file) => handleImageUpload("awayLogo", file)} />
@@ -549,32 +634,32 @@ function App() {
         {activeTab === "design" && (
           <section>
             <label className="sliderField"><span>Hintergrund-Deckkraft: {m.backgroundOpacity}%</span><input type="range" min="10" max="100" value={m.backgroundOpacity} onChange={(e) => updateMatch("backgroundOpacity", Number(e.target.value))} /></label>
-            <label className="sliderField"><span>Logo-Größe: {m.logoScale}%</span><input type="range" min="50" max="180" value={m.logoScale} onChange={(e) => updateMatch("logoScale", Number(e.target.value))} /></label>
-            <label className="sliderField"><span>Sponsorgröße: {m.sponsorScale}%</span><input type="range" min="60" max="260" value={m.sponsorScale} onChange={(e) => updateMatch("sponsorScale", Number(e.target.value))} /></label>
+            <label className="sliderField"><span>Logo-GrÃ¶ÃŸe: {m.logoScale}%</span><input type="range" min="50" max="180" value={m.logoScale} onChange={(e) => updateMatch("logoScale", Number(e.target.value))} /></label>
+            <label className="sliderField"><span>SponsorgrÃ¶ÃŸe: {m.sponsorScale}%</span><input type="range" min="60" max="260" value={m.sponsorScale} onChange={(e) => updateMatch("sponsorScale", Number(e.target.value))} /></label>
           </section>
         )}
 
         {activeTab === "library" && (
           <section>
-            <LibrarySelect label="Heimteam aus Bibliothek" items={state.teams} empty="Team auswählen" onPick={(t) => { updateMatch("homeTeam", t.name); if (t.logo) updateMatch("homeLogo", t.logo); if (t.logoUrl) updateMatch("homeLogoUrl", t.logoUrl); }} />
-            <LibrarySelect label="Gegner aus Bibliothek" items={state.teams} empty="Team auswählen" onPick={(t) => { updateMatch("awayTeam", t.name); if (t.logo) updateMatch("awayLogo", t.logo); if (t.logoUrl) updateMatch("awayLogoUrl", t.logoUrl); }} />
-            <LibrarySelect label="Sponsor aus Bibliothek" items={state.sponsors} empty="Sponsor auswählen" onPick={(s) => { if (s.logo) updateMatch("sponsorLogo", s.logo); if (s.logoUrl) updateMatch("sponsorLogoUrl", s.logoUrl); }} />
-            <LibrarySelect label="Hintergrund aus Bibliothek" items={state.backgrounds} empty="Hintergrund auswählen" onPick={(b) => { if (b.image) updateMatch("backgroundImage", b.image); if (b.imageUrl) updateMatch("backgroundImageUrl", b.imageUrl); }} />
-            <div className="libraryStats"><div><span>Teams</span><b>{state.teams.length}</b></div><div><span>Sponsoren</span><b>{state.sponsors.length}</b></div><div><span>Torschützen</span><b>{state.scorerNames.length}</b></div></div>
+            <LibrarySelect label="Heimteam aus Bibliothek" items={state.teams} empty="Team auswÃ¤hlen" onPick={(t) => pickTeamFromLibrary("home", t)} />
+            <LibrarySelect label="Gegner aus Bibliothek" items={state.teams} empty="Team auswÃ¤hlen" onPick={(t) => pickTeamFromLibrary("away", t)} />
+            <LibrarySelect label="Sponsor aus Bibliothek" items={state.sponsors} empty="Sponsor auswÃ¤hlen" onPick={(s) => pickSponsorFromLibrary(s)} />
+            <LibrarySelect label="Hintergrund aus Bibliothek" items={state.backgrounds} empty="Hintergrund auswÃ¤hlen" onPick={(b) => pickBackgroundFromLibrary(b)} />
+            <div className="libraryStats"><div><span>Teams</span><b>{state.teams.length}</b></div><div><span>Sponsoren</span><b>{state.sponsors.length}</b></div><div><span>TorschÃ¼tzen</span><b>{state.scorerNames.length}</b></div></div>
           </section>
         )}
 
         {activeTab === "export" && (
           <section>
             <div className="ratioGrid">
-              <button className={ratio === "portrait" ? "choice on" : "choice"} onClick={() => setRatio("portrait")}><Smartphone size={18}/> 1080×1350</button>
-              <button className={ratio === "story" ? "choice on" : "choice"} onClick={() => setRatio("story")}><Smartphone size={18}/> Story 1080×1920</button>
-              <button className={ratio === "landscape" ? "choice on" : "choice"} onClick={() => setRatio("landscape")}><Monitor size={18}/> 1920×1080</button>
+              <button className={ratio === "portrait" ? "choice on" : "choice"} onClick={() => setRatio("portrait")}><Smartphone size={18}/> 1080Ã—1350</button>
+              <button className={ratio === "story" ? "choice on" : "choice"} onClick={() => setRatio("story")}><Smartphone size={18}/> Story 1080Ã—1920</button>
+              <button className={ratio === "landscape" ? "choice on" : "choice"} onClick={() => setRatio("landscape")}><Monitor size={18}/> 1920Ã—1080</button>
             </div>
             <div className="buttonStack">
               <button className="primary" onClick={exportPngCanvas}><Download size={18}/> PNG exportieren</button>
               <button className="secondary" onClick={() => persistCloud(state)}><Cloud size={18}/> In Cloud speichern</button>
-              <button className="ghost" onClick={() => setState(defaultState)}><RotateCcw size={18}/> Alles zurücksetzen</button>
+              <button className="ghost" onClick={() => setState(defaultState)}><RotateCcw size={18}/> Alles zurÃ¼cksetzen</button>
             </div>
           </section>
         )}
@@ -614,3 +699,4 @@ function App() {
 }
 
 createRoot(document.getElementById("root")).render(<App />);
+
